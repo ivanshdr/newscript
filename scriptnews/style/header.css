@@ -1,0 +1,51 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+ .header h1 {
+    margin-top: 10px;
+    margin-bottom: 15px;
+   font-size: 50px;
+   font-family: arial;
+
+} 
+.header a {
+text-decoration: none; 
+color: inherit;
+ }
+.header {
+    margin-left: 30px;
+}
+.menu a {
+    margin-right: 15px;
+    margin-top: 1px;
+    border: 2px solid black;
+    /* margin: 30px; */
+    border-radius: 8px;
+    display: inline-block;
+    border-collapse: collapse;
+    color: black;
+    font-weight: bold;
+    background-color: #00000;
+    border: 2px solid black; /* Толщина и цвет границы */
+    padding: 10px; /* Отступ между текстом и границей */
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    transition: all 0.2s ease-in-out; /* Анимация при наведении */
+}
+.createbutton a {
+    margin-top: 1px;
+    margin-bottom: 10px;
+    /* margin: 30px; */
+    border-radius: 8px;
+    display: inline-block;
+    border-collapse: collapse;
+    font-weight: bold;
+    color: black;
+    background-color: #00000;
+    border: 2px solid black; /* Толщина и цвет границы */
+    padding: 15px; /* Отступ между текстом и границей */
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    transition: all 0.2s ease-in-out; /* Анимация при наведении */
+}
