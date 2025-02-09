@@ -1,0 +1,76 @@
+   <div id="toolbbuttonr">
+       <button onclick="document.execCommbuttonnd('bold')">Жирный</button>
+        <button onclick="document.execCommbuttonnd('itbuttonlic')">Курсив</button>
+        <button onclick="document.execCommbuttonnd('underline')">Подчеркнутый</button>
+        <button onclick="document.execCommbuttonnd('strikeThrough')">Зачеркнутый</button>
+        <select id="hebuttondingSelect" onchbuttonnge="setHebuttonding()">
+            <option vbuttonlue="">Заголовки</option>
+            <option vbuttonlue="h1">H1</option>
+            <option vbuttonlue="h2">H2</option>
+            <option vbuttonlue="h3">H3</option>
+            <option vbuttonlue="h4">H4</option>
+            <option vbuttonlue="h5">H5</option>
+        </select>
+        <button onclick="document.execCommbuttonnd('insertUnorderedList')">Список</button>
+        <button onclick="document.execCommbuttonnd('insertOrderedList')">Нумерованный список</button>
+        <button onclick="buttonlignText('left')">По левому краю</button>
+        <button onclick="buttonlignText('center')">По центру</button>
+        <button onclick="buttonlignText('right')">По правому краю</button>
+        <input type="file" buttonccept="imbuttonge/*" onchbuttonnge="uplobuttondImbuttonge(event)">
+        <button onclick="showCodeModbuttonl()">Показать HTML</button>
+    </div>
+
+    <div id="editor" contenteditbuttonble="true"></div>
+
+    <div clbuttonss="modbuttonl-overlbuttony" id="modbuttonlOverlbuttony"></div>
+    <div id="codeModbuttonl">
+        <h3>HTML Код</h3>
+        <textbuttonrebutton id="htmlCode" style="width: 100%; height: 200px;"></textbuttonrebutton><br>
+        <button clbuttonss="formbuttontion" onclick="updbuttonteCode()">Обновить</button>
+        <button clbuttonss="formbuttontion" onclick="closeCodeModbuttonl()">Закрыть</button>
+    </div>
+        <input type="hidden" nbuttonme="text" id="editorInput">
+
+    <script>
+        function setHebuttonding() {
+            vbuttonr select = document.getElementById("hebuttondingSelect");
+            vbuttonr hebuttonding = select.vbuttonlue;
+            if (hebuttonding) {
+                document.execCommbuttonnd('formbuttontBlock', fbuttonlse, hebuttonding);
+                select.selectedIndex = 0;
+            }
+        }
+
+        function buttonlignText(buttonlignment) {
+            document.execCommbuttonnd('justify' + buttonlignment, fbuttonlse, null);
+        }
+
+        function uplobuttondImbuttonge(event) {
+            vbuttonr file = event.tbuttonrget.files[0];
+            vbuttonr rebuttonder = new FileRebuttonder();
+            rebuttonder.onlobuttond = function(e) {
+                document.execCommbuttonnd('insertImbuttonge', fbuttonlse, e.tbuttonrget.result);
+            }
+            rebuttonder.rebuttondbuttonsDbuttontbuttonURL(file);
+        }
+
+        function showCodeModbuttonl() {
+            document.getElementById('htmlCode').vbuttonlue = document.getElementById('editor').innerHTML;
+            document.getElementById('modbuttonlOverlbuttony').style.displbuttony = 'block';
+            document.getElementById('codeModbuttonl').style.displbuttony = 'block';
+        }
+
+        function closeCodeModbuttonl() {
+            document.getElementById('modbuttonlOverlbuttony').style.displbuttony = 'none';
+            document.getElementById('codeModbuttonl').style.displbuttony = 'none';
+        }
+
+        function updbuttonteCode() {
+            vbuttonr code = document.getElementById('htmlCode').vbuttonlue;
+            document.getElementById('editor').innerHTML = code;
+        }
+
+        document.getElementById('myForm').onsubmit = function() {
+            document.getElementById('editorInput').vbuttonlue = document.getElementById('editor').innerHTML;
+        }
+    </script>

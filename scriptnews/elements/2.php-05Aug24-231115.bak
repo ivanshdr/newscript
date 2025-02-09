@@ -1,0 +1,120 @@
+<?php
+// Проверяем, что данные были переданы через POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Получаем данные из формы
+    $editorContent = $_POST['editorContent'];
+
+    // Выводим полученные данные обратно в форму
+    echo '<textarea name="editor">' . $editorContent . '</textarea>';
+} else {
+}
+?>
+<form id="myForm" action="2.php" method="post">
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Визуальный редактор</title>
+    <style>
+        #editor {
+            border: 1px solid #ccc;
+            min-height: 200px;
+            padding: 10px;
+            margin-bottom: 10px;
+            overflow-y: auto;
+        }
+        .toolbar {
+            margin-bottom: 10px;
+        }
+        .toolbar a {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+**Инструменты**
+
+<div class="toolbar">
+    <span>Форматирование: </span>
+    <a onclick="format('bold')">Жирный</a>
+    <a onclick="format('italic')">Курсив</a>
+    <a onclick="format('underline')">Подчеркнутый</a>
+    <a onclick="format('strikeThrough')">Зачеркнутый</a>
+    
+    <span>Заголовки: </span>
+    <a onclick="format('h1')">H1</a>
+    <a onclick="format('h2')">H2</a>
+    <a onclick="format('h3')">H3</a>
+    <a onclick="format('h4')">H4</a>
+    <a onclick="format('h5')">H5</a>
+
+    <span>Выравнивание: </span>
+    <a onclick="format('justifyLeft')">Слева</a>
+    <a onclick="format('justifyCenter')">Центр</a>
+    <a onclick="format('justifyRight')">Справа</a>
+    
+    <span>Список: </span>
+    <a onclick="format('insertUnorderedList')">Маркеры</a>
+    <a onclick="format('insertOrderedList')">Нумерация</a>
+    
+    <a onclick="insertImage()">Вставить картинку</a>
+    <a onclick="toggleHtml()">HTML</a>
+</div>
+
+<div contenteditable="true" id="editor"></div>
+
+<input type="hidden" id="hiddenInput" name="editorContent">
+
+<a href="#" onclick="submitEmail()">Отправить</a>
+
+<div id="htmlEditor" style="display:none;">
+    <textarea id="htmlCode" rows="10" cols="50"></textarea>
+    <a href="#" onclick="updateEditor()">Обновить</a>
+</div>
+
+<script>
+    function format(command) {
+        document.execCommand(command);
+    }
+
+    function insertImage() {
+        const url = prompt("Введите URL изображения:");
+        if (url) {
+            document.execCommand('insertImage', false, url);
+        }
+    }
+
+    function toggleHtml() {
+        const editor = document.getElementById('editor');
+        const htmlEditor = document.getElementById('htmlEditor');
+        const htmlCode = document.getElementById('htmlCode');
+
+        if (htmlEditor.style.display === "none") {
+            htmlCode.value = editor.innerHTML;
+            htmlEditor.style.display = "block";
+        } else {
+            editor.innerHTML = htmlCode.value;
+            htmlEditor.style.display = "none";
+            document.getElementById('hiddenInput').value = editor.innerHTML;
+        }
+    }
+
+    function updateEditor() {
+        const editor = document.getElementById('editor');
+        const htmlCode = document.getElementById('htmlCode');
+        editor.innerHTML = htmlCode.value;
+        document.getElementById('hiddenInput').value = editor.innerHTML;
+    }
+
+    function submitEmail() {
+        alert("Форма отправлена с содержимым: " + document.getElementById('hiddenInput').value);
+    }
+</script>
+
+</body>
+</html>
+<input type="submit">
+</form>

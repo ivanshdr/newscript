@@ -1,0 +1,30 @@
+@media (max-width: 768px) {
+div {
+    width: 100%;
+    margin: 0 auto;
+}
+.header {
+    margin-left: 0%;
+}
+.list {
+    margin-left: 0px; /* старый дизайн имел 20px */
+    margin-top: 12px;
+}
+.menu a {
+    margin-top: 8px;
+}
+.form, .index{
+    margin-left: 0%; /* старый дизайн имел 20px */
+    margin-top: 12px;
+    border-radius: 15px;
+    border: 0% solid black; /* толщина, стиль, цвет */
+    margin-bottom: 0%;
+}
+.form input, textarea {
+    margin-right: 0%;
+    margin-left:0%;
+}
+.form a {
+    margin-left: 0%;
+}
+}

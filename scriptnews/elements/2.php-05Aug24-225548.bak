@@ -1,0 +1,150 @@
+<?php
+// Проверяем, что данные были переданы через POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Получаем данные из формы
+    $editorContent = $_POST['editorContent'];
+
+    // Выводим полученные данные обратно в форму
+    echo '<textarea name="editor">' . $editorContent . '</textarea>';
+} else {
+}
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Визуальный редактор</title>
+    <style>
+        #editor {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        #editor[contenteditable="true"]:focus {
+            outline: none;
+        }
+
+        .toolbar {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<<form id="myForm" action="2.php" method="post">
+<div class="toolbar">
+    <select id="headerSelect">
+        <option value="">Заголовки</option>
+        <option value="h1">H1</option>
+        <option value="h2">H2</option>
+        <option value="h3">H3</option>
+        <option value="h4">H4</option>
+        <option value="h5">H5</option>
+    </select>
+
+    <select id="fontSelect">
+        <option value="Arial">Шрифт</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+    </select>
+
+    <select id="fontSizeSelect">
+        <option value="2">Размер текста</option>
+        <option value="1">Маленький</option>
+        <option value="3">Средний</option>
+        <option value="4">Большой</option>
+        <option value="5">Очень большой</option>
+    </select>
+
+    <a href="#" onclick="formatText('bold')">Жирный</a>
+    <a href="#" onclick="formatText('italic')">Курсив</a>
+    <a href="#" onclick="formatText('underline')">Подчеркнутый</a>
+    <a href="#" onclick="formatText('strikeThrough')">Зачеркнутый</a>
+    <a href="#" onclick="formatText('insertOrderedList')">Нумерованный список</a>
+    <a href="#" onclick="formatText('insertUnorderedList')">Маркированный список</a>
+    <a href="#" onclick="formatText('justifyLeft')">Влево</a>
+    <a href="#" onclick="formatText('justifyCenter')">По центру</a>
+    <a href="#" onclick="formatText('justifyRight')">Вправо</a>
+    <a href="#" onclick="insertImage()">Вставить изображение</a>
+    <a href="#" onclick="toggleHtml()">Показать HTML</a>
+</div>
+
+<div id="editor" contenteditable="true"></div>
+
+<input type="hidden" id="content" name="editorContent">
+
+<div id="htmlModal" style="display: none;">
+    <textarea id="htmlCode" rows="10" style="width: 100%;"></textarea>
+    <button onclick="updateHtml()">Обновить</button>
+</div>
+
+<a href="#" id="submitButton">Отправить</a>
+<input type="submit">
+</form>
+<script>
+    const editor = document.getElementById('editor');
+    const headerSelect = document.getElementById('headerSelect');
+    const fontSelect = document.getElementById('fontSelect');
+    const fontSizeSelect = document.getElementById('fontSizeSelect');
+
+    headerSelect.addEventListener('change', function () {
+        if (this.value) {
+            formatText(this.value);
+            this.value = '';
+        }
+    });
+
+    fontSelect.addEventListener('change', function () {
+        document.execCommand('fontName', false, this.value);
+    });
+
+    fontSizeSelect.addEventListener('change', function () {
+        document.execCommand('fontSize', false, this.value);
+    });
+    
+    function formatText(command) {
+        document.execCommand(command, false, null);
+        updateContent();
+    }
+
+    function insertImage() {
+        const url = prompt("Введите URL изображения:");
+        if (url) {
+            document.execCommand('insertImage', false, url);
+            updateContent();
+        }
+    }
+
+    function updateContent() {
+        document.getElementById('content').value = editor.innerHTML;
+    }
+
+    function toggleHtml() {
+        const modal = document.getElementById('htmlModal');
+        const htmlCode = document.getElementById('htmlCode');
+        htmlCode.value = editor.innerHTML;
+        modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function updateHtml() {
+
+        const htmlCode = document.getElementById('htmlCode').value;
+        editor.innerHTML = htmlCode;
+        updateContent();
+        toggleHtml();
+    }
+
+    document.getElementById('submitButton').addEventListener('click', function () {
+        updateContent();
+        // Здесь вы можете добавить логику по отправке формы
+        alert('Форма отправлена');
+    });
+</script>
+
+</body>
+</html>

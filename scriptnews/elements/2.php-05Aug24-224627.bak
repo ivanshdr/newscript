@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Визуальный редактор</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #editor {
+            border: 1px solid #ccc;
+            min-height: 300px;
+            padding: 10px;
+            background-color: white;
+        }
+        #toolbar {
+            margin-bottom: 10px;
+        }
+        a {
+            margin-right: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        select {
+            margin-right: 5px;
+        }
+        #codeModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            z-index: 1000;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toolbar">
+        <a onclick="document.execCommand('bold')">Жирный</a>
+        <a onclick="document.execCommand('italic')">Курсив</a>
+        <a onclick="document.execCommand('underline')">Подчеркнутый</a>
+        <a onclick="document.execCommand('strikeThrough')">Зачеркнутый</a>
+        <select id="headingSelect" onchange="setHeading()">
+            <option value="">Заголовки</option>
+            <option value="h1">H1</option>
+            <option value="h2">H2</option>
+            <option value="h3">H3</option>
+            <option value="h4">H4</option>
+            <option value="h5">H5</option>
+        </select>
+        <select id="fontSelect" onchange="setFont()">
+            <option value="">Шрифт</option>
+            <option value="Arial">Arial</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Verdana">Verdana</option>
+        </select>
+        <select id="fontSizeSelect" onchange="setFontSize()">
+            <option value="">Размер</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+        </select>
+        <a onclick="alignText('left')">По левому краю</a>
+        <a onclick="alignText('center')">По центру</a>
+        <a onclick="alignText('right')">По правому краю</a>
+        <a onclick="document.execCommand('insertUnorderedList')">Список</a>
+        <a onclick="document.execCommand('insertOrderedList')">Нумерованный список</a>
+        <input type="file" accept="image/*" onchange="uploadImage(event)">
+        <a onclick="showCodeModal()">Показать HTML</a>
+    </div>
+
+    <div id="editor" contenteditable="true"></div>
+
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div id="codeModal">
+        <h3>HTML Код</h3>
+        <textarea id="htmlCode" style="width: 100%; height: 200px;"></textarea><br>
+        <a onclick="updateCode()">Обновить</a>
+        <a onclick="closeCodeModal()">Закрыть</a>
+    </div>
+
+    <form id="myForm" action="send_email.php" method="post">
+        <input type="hidden" name="editor" id="editorInput">
+        <a onclick="document.getElementById('myForm').submit(); return false;">Отправить</a>
+    </form>
+
+    <script>
+        function setHeading() {
+            var select = document.getElementById("headingSelect");
+            var heading = select.value;
+            if (heading) {
+                
+                document.execCommand('formatBlock', false, heading);
+                select.selectedIndex = 0;
+            }
+        }
+
+        function setFont() {
+            var select = document.getElementById("fontSelect");
+            var font = select.value;
+            if (font) {
+                document.execCommand('fontName', false, font);
+                select.selectedIndex = 0;
+            }
+        }
+
+        function setFontSize() {
+            var select = document.getElementById("fontSizeSelect");
+            var size = select.value;
+            if (size) {
+                document.execCommand('fontSize', false, size);
+                select.selectedIndex = 0;
+            }
+        }
+
+        function alignText(alignment) {
+            document.execCommand('justify' + alignment, false, null);
+        }
+
+        function uploadImage(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.execCommand('insertImage', false, e.target.result);
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function showCodeModal() {
+            document.getElementById('htmlCode').value = document.getElementById('editor').innerHTML;
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.getElementById('codeModal').style.display = 'block';
+        }
+
+        function closeCodeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('codeModal').style.display = 'none';
+        }
+
+        function updateCode() {
+            var code = document.getElementById('htmlCode').value;
+            document.getElementById('editor').innerHTML = code;
+        }
+
+        document.getElementById('myForm').onsubmit = function() {
+            document.getElementById('editorInput').value = document.getElementById('editor').innerHTML;
+        }
+    </script>
+
+</body>
+</html>

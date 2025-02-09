@@ -1,0 +1,10 @@
+.list {
+    margin-left: 30px; /* старый дизайн имел 20px */
+    margin-top: 12px;
+}
+
+.card {
+    border-radius: 15px;
+    border: 2px solid black; /* толщина, стиль, цвет */
+    margin-bottom: 8px;
+}
