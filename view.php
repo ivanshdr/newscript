@@ -24,9 +24,9 @@ if (isset($_GET['id'])) {
             // echo $linefull;
             $data = explode('|', $linefull);
             $textshow = base64_decode($data[2]);
-            
+            $typesecure = explode(",", $data[5]);            
             if ($_POST['name'] . $_POST['email'] . $_POST['comment'] . $_POST['sendcomment']) {
-                if (strpos($data[4], "notallowedcom") !== false) {
+                    if ("notallowedcom" !== $typesecure[1]) {
                     $name = base64_encode(htmlentities($_POST['name']));
                     $email = hash('sha256', base64_encode(htmlentities($_POST['email'])));
                     $ip = hash('sha256', base64_encode(htmlentities($_SERVER['REMOTE_ADDR'])));
@@ -51,7 +51,7 @@ if (isset($_GET['id'])) {
             ?>
             <h1>📰<?= base64_decode($data[1]) ?></h1>
             <p>📅Дата:<?= base64_decode($data[3]) ?></p><?= $textshow ?>
-            <?php if (strpos($data[4], "notallowedcom") !== false) { ?>
+            <?php if ("notallowedcom" !== $typesecure[1]) { ?>
                 <form action="?id=<?= $id ?>" method="post">
                     <h2>📃оставить комментарии</h2>
                     <p><input type="text" placeholder="имя" name="name"></p>
