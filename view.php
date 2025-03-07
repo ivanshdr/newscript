@@ -101,7 +101,8 @@ if (isset($_GET['id'])) {
     
     foreach ($lines as $line) {
         $parts = explode('|', $line);
-        if ((count($parts) > 5 && trim($parts[5]) === 'public') &&
+        $typesecure = explode(",", $parts[5]);
+        if ((count($parts) > 5 && trim($typesecure[0]) === 'public') &&
             (empty($sections) || (count($parts) > 6 && trim($parts[6]) === $sections))) {
             $publicEntries[] = $line;
         }
